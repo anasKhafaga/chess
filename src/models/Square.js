@@ -9,6 +9,10 @@ class Square {
         this.coord = new Coord(col, row)
         this.occupying = null;
     }
+
+    occupy(warrior) {
+        this.occupying = warrior;
+    }
 }
 
 class Coord {
