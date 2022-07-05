@@ -1,6 +1,6 @@
-export default function Square() {
+export default function Square({model}) {
     return (
-        <div>
+        <div className={model.color}>
             square will go here
         </div>
     )

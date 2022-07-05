@@ -19,7 +19,7 @@ export default function Board() {
     }, [])
     
     return (
-        <div>
+        <div className="brd">
             {boardSqs.length && boardSqs.map(({k, v}) => {
                 return (
                     <Square key={k} model={v}/>
