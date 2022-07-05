@@ -5,6 +5,15 @@ import model from '../models/Board';
 export default function Board() {
 
     const [boardSqs, setBoardSqs] = useState([]);
+    const [activeWarrior, setActiveWarrior] = useState(null);
+
+    function activateWarrior(warrior) {
+        setActiveWarrior((state) => {
+            if(state && state === warrior) return null;
+
+            return warrior;
+        });
+    }
     
     useEffect(() => {
         let boardMap = model.generateSquares();
@@ -44,7 +53,7 @@ export default function Board() {
         <div className="brd">
             {boardSqs.length && boardSqs.map(({k, v}) => {
                 return (
-                    <Square key={k} model={v}/>
+                    <Square key={k} model={v} activateWarrior={activateWarrior} activeWarrior = {activeWarrior} />
                 )
             })}
         </div>

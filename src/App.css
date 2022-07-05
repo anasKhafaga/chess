@@ -69,9 +69,21 @@
   background-color: #F2E6CE;
 }
 
+.light.active {
+  background-color: #f5e989;
+}
+
+.dark.active {
+  background-color: #663d3d;
+}
+
 @media only screen and (max-width: 600px) {
   .brd {
     width: 300px;
     height: 300px;
+  }
+
+  .brd img {
+    width: 30px;
   }
 }
