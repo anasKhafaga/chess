@@ -11,6 +11,27 @@ class Knight extends Warrior {
     constructor(props) {
         super({...props, white, black});
     }
+
+    updateCoveredSqs(board) {
+        let coveredCoords = [];
+        const {col, row} = this.sq.coord;
+
+        const iter = this.coveredSqs.keys();
+        for(let i = row - 2; i <= row + 2 && i <= board.rows.length; i++) {
+            if( i <= 0 || i === row) continue;
+
+            for(let j = col - 3; j <= col + 1 && j < board.cols.length; j++) {
+                if(j < 0 || j === col - 1 || Math.abs(row - i) === Math.abs((col - 1) - j)) continue;
+
+                coveredCoords.push([{col: j, row: i}, iter.next().value])
+            }
+            
+        }
+
+        super.updateCoveredSqs(coveredCoords, board);
+        return this.coveredSqs;
+    }
+    
 }
 
 export default Knight;

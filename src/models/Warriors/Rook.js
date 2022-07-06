@@ -11,6 +11,30 @@ class Rook extends Warrior {
     constructor(props) {
         super({...props, white, black});
     }
+
+    updateCoveredSqs(board) {
+        let coveredCoords = [];
+        const {col, row} = this.sq.coord;
+
+        for(let i = row + 1; i <= board.rows.length; i++) {
+            coveredCoords.push([{col: col - 1, row: i}, 'for']);
+        }
+
+        for(let i = row - 1; i > 0; i--) {
+            coveredCoords.push([{col: col - 1, row: i}, 'back']);
+        }
+
+        for(let j = col; j < board.cols.length; j++) {
+            coveredCoords.push([{col: j, row}, 'rt']);
+        }
+
+        for(let j = col - 2; j >= 0; j--) {
+            coveredCoords.push([{col: j, row}, 'lt']);
+        }
+
+        super.updateCoveredSqs(coveredCoords, board);
+        return this.coveredSqs;
+    }
 }
 
 export default Rook;
