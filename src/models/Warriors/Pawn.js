@@ -12,6 +12,28 @@ class Pawn extends Warrior {
         super({...props, white, black});
     }
 
+    updatePermittedSqs() {
+        this.permittedSqs.length = 0;
+        const forward = this.coveredSqs.get('for');
+        const [diag1] = this.coveredSqs.get('forLt');
+        const [diag2] = this.coveredSqs.get('forRt');
+        const dias = [diag1, diag2];
+
+        for(let forSq of forward) {
+            if(!forSq.occupying) {
+                this.permittedSqs.push(forSq);
+            }
+        }
+
+        for(let diaSq of dias) {
+            if(diaSq && diaSq.occupying && diaSq.occupying.army !== this.army) {
+                this.permittedSqs.push(diaSq);   
+            }
+        }
+
+        return this.permittedSqs;
+    }
+    
     updateCoveredSqs(board) {
         let coveredCoords = [];
         const {col, row} = this.sq.coord;

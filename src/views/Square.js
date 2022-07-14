@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import Warrior from './Warrior';
 
-export default function Square({model, activeWarrior, activateWarrior}) {
+export default function Square({model, activeWarrior, activateWarrior, boardModel}) {
 
     const [occupied, setOccupied] = useState(false);
     const [occupyingWarrior, setOccupyingWarrior] = useState(null)
@@ -24,7 +24,7 @@ export default function Square({model, activeWarrior, activateWarrior}) {
     
     return (
         <div className={`${model.color} ${focus? 'active' : ''}`}>
-            {occupied? <Warrior model={occupyingWarrior} activateWarrior={activateWarrior} /> : null}
+            {occupied? <Warrior model={occupyingWarrior} activateWarrior={activateWarrior} boardModel={boardModel} /> : null}
         </div>
     )
 }
