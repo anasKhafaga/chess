@@ -33,16 +33,24 @@ class Warrior {
         return this.permittedSqs;
     }
     
+    gotUpdate() {
+        this.updatePermittedSqs()
+    }
+    
     updateCoveredSqs(coords, board) {
 
         for(let [k, v] of this.coveredSqs) {
+            for(let sq of v) {
+                sq.removeObserver(this);
+            }
             v.length = 0;
         }
         
         for(let [{col, row}, dir] of coords) {
             const colLet = board.cols[col];
             const sq = board.boardMap.get(`${colLet}${row}`);
-
+            sq.addObserver(this);
+            
             this.coveredSqs.get(dir).push(sq);
         }
     }
