@@ -12,7 +12,7 @@ class Rook extends Warrior {
         super({...props, white, black});
     }
 
-    updateCoveredSqs(board) {
+    getCoords(board) {
         let coveredCoords = [];
         const {col, row} = this.sq.coord;
 
@@ -31,6 +31,11 @@ class Rook extends Warrior {
         for(let j = col - 2; j >= 0; j--) {
             coveredCoords.push([{col: j, row}, 'lt']);
         }
+        return coveredCoords;
+    }
+
+    updateCoveredSqs(board) {
+        let coveredCoords = this.getCoords(board);
 
         super.updateCoveredSqs(coveredCoords, board);
         return this.coveredSqs;

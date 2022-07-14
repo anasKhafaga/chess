@@ -12,7 +12,7 @@ class Bishop extends Warrior {
         super({...props, white, black});
     }
 
-    updateCoveredSqs(board) {
+    getCoords(board) {
         let coveredCoords = [];
         const {col, row} = this.sq.coord;
 
@@ -31,6 +31,11 @@ class Bishop extends Warrior {
         for (let i = row - 1, j = col - 2; i > 0 && j>= 0; i--, j--){
             coveredCoords.push([{col: j, row: i}, 'backLt']);
         }
+        return coveredCoords;
+    }
+
+    updateCoveredSqs(board) {
+        let coveredCoords = this.getCoords(board);
         
         
         super.updateCoveredSqs(coveredCoords, board);

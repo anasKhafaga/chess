@@ -53,6 +53,17 @@ class Warrior {
             
             this.coveredSqs.get(dir).push(sq);
         }
+
+        this.updatePermittedSqs();
+    }
+
+    move(sq, board, cb) {
+        this.firstMove = false;
+        cb(this);
+        this.sq.unOccupy();
+        this.sq = sq;
+        this.updateCoveredSqs(board);
+        sq.occupy(this)
     }
 }
 

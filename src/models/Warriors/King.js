@@ -22,6 +22,34 @@ class King extends Warrior {
         }
     }
 
+    updatePermittedSqs() {
+        const intial = super.updatePermittedSqs();
+        const final = [];
+
+        main: for(let sq of intial) {
+            for(let obs of sq.observers) {
+                if(obs.army === this.army) continue;
+
+                if(obs.rank === 'P') {
+                    if(obs.coveredSqs.get('forLt')[0] === sq || obs.coveredSqs.get('forRt')[0] === sq) {
+                        continue main;
+                    }
+
+                    continue;
+                }
+                
+                for(let obSq of obs.permittedSqs) {
+                    if(sq === obSq) continue main;
+                }
+            }
+
+            final.push(sq);
+        }
+
+        this.permittedSqs = [...final];
+        return this.permittedSqs;
+    }
+    
     updateCoveredSqs(board) {
         let coveredCoords = [];
         const {col, row} = this.sq.coord;

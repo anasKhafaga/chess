@@ -8,9 +8,9 @@ export default function Board() {
     const [activeWarrior, setActiveWarrior] = useState(null);
 
     function activateWarrior(warrior) {
-        warrior && console.log(warrior.updateCoveredSqs(model));
         setActiveWarrior((state) => {
             if(state && state === warrior) return null;
+            warrior && warrior.updatePermittedSqs();
             return warrior;
         });
     }

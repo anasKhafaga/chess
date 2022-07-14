@@ -19,6 +19,7 @@ class Square {
     unOccupy() {
         this.occupying = null;
         this.notifyObservers();
+        this.unOccupyView();
     }
     
     addObserver(warrior) {

@@ -16,9 +16,10 @@ class Queen extends Warrior {
     }
 
     updateCoveredSqs(board) {
-        this.bishopModel.updateCoveredSqs.call(this, board);
-        this.rookModel.updateCoveredSqs.call(this, board);
+        let coveredCoords = [...this.bishopModel.getCoords.call(this, board), ...this.rookModel.getCoords.call(this, board)];
 
+        super.updateCoveredSqs(coveredCoords, board);
+        
         return this.coveredSqs;
     }
 }
