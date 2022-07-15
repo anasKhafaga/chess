@@ -59,7 +59,7 @@ class Warrior {
 
     move(sq, board, cb) {
         this.firstMove = false;
-        cb(this);
+        cb(this, this.sq);
         this.sq.unOccupy();
         this.sq = sq;
         this.updateCoveredSqs(board);

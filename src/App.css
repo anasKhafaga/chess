@@ -77,6 +77,11 @@
   background-color: #663d3d;
 }
 
+.brd.flip, .brd > *.flip {
+  transform: scaleX(-1) rotate(0deg);
+  -webkit-transform: scaleX(-1) rotate(0deg);
+}
+
 @media only screen and (max-width: 600px) {
   .brd {
     width: 300px;

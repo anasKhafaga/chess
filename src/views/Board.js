@@ -6,14 +6,27 @@ export default function Board() {
 
     const [boardSqs, setBoardSqs] = useState([]);
     const [activeWarrior, setActiveWarrior] = useState(null);
+    const [player, setPlayer] = useState('white');
+    const [flip, setFlip] = useState(false);
+    const [prevWarrior, setPrevWarrior] = useState(null);
+    const [prevSq, setPrevSq] = useState(null);
 
     function activateWarrior(warrior) {
+        if(warrior && warrior.army !== player) return;
         setActiveWarrior((state) => {
             if(state && state === warrior) return null;
             warrior && warrior.updatePermittedSqs();
             return warrior;
         });
     }
+
+    useEffect(() => {
+        if(player === 'black') {
+            setFlip(true);
+        } else {
+            setFlip(false);
+        }
+    }, [player]);
     
     useEffect(() => {
         let boardMap = model.generateSquares();
@@ -50,10 +63,10 @@ export default function Board() {
     }, [])
     
     return (
-        <div className="brd">
+        <div className={`brd ${flip? 'flip' : ''}`}>
             {boardSqs.length && boardSqs.map(({k, v}) => {
                 return (
-                    <Square key={k} model={v} activateWarrior={activateWarrior} activeWarrior = {activeWarrior} boardModel={model} />
+                    <Square key={k} model={v} activateWarrior={activateWarrior} activeWarrior = {activeWarrior} boardModel={model} player={player} setPlayer={setPlayer} flip={flip} prevWarrior={prevWarrior} setPrevWarrior={setPrevWarrior} prevSq={prevSq} setPrevSq={setPrevSq} />
                 )
             })}
         </div>
