@@ -27,6 +27,11 @@ export default function Square({model, activeWarrior, activateWarrior, boardMode
             setOccupied(false);
             setOccupyingWarrior(null);
         }
+
+        model.occupyView = function(warrior) {
+            setOccupied(true);
+            setOccupyingWarrior(warrior);
+        }
     }, [])
 
     useEffect(()=> {

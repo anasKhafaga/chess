@@ -72,6 +72,52 @@ class King extends Warrior {
         super.updateCoveredSqs(coveredCoords, board);
         return this.coveredSqs
     }
+
+    move(...params) {
+
+        if(this.firstMove) {
+            const [sq, board] = params;
+            const [aSq, cSq, dSq, fSq, gSq, hSq] = ['a', 'c', 'd', 'f', 'g', 'h'].map(col => {
+                return board.boardMap.get(`${col}${this.sq.coord.row}`);
+            })
+
+            if(sq === gSq) {
+                const rookSq = hSq;
+                const rook = hSq.occupying;
+
+                if(rook && rook.firstMove && rook.permittedSqs.includes(sq) && this.permittedSqs.includes(fSq)){
+                    const castleSq = fSq;
+                    rook.firstMove = false;
+                    castleSq.occupyView(rook);
+                    castleSq.occupy(rook);
+                    rook.sq.unOccupy();
+                    rook.sq = castleSq;
+                    rook.updateCoveredSqs(board);
+                } else {
+                    return;
+                }
+            } else if (sq === cSq) {
+                const rookSq = aSq;
+                const rook = rookSq.occupying;
+                if(rook && rook.firstMove && rook.permittedSqs.includes(sq) && this.permittedSqs.includes(dSq)) {
+                    const castleSq = dSq;
+                    rook.firstMove = false;
+                    castleSq.occupyView(rook);
+                    castleSq.occupy(rook);
+                    rook.sq.unOccupy();
+                    rook.sq = castleSq;
+                    rook.updateCoveredSqs(board);
+                } else {
+                    return;
+                }
+            }
+        }
+        
+
+        super.move(...params);
+        
+    }
+    
 }
 
 export default King;
