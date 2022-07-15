@@ -30,6 +30,10 @@ class Warrior {
                     }
                     break dir;
                 }
+
+                if(this.king && this.king.checked && !this.king.checkingPath.includes(sq)) {
+                    continue dir;
+                }
                 this.permittedSqs.push(sq);
             }
         }
@@ -68,6 +72,20 @@ class Warrior {
         this.sq = sq;
         this.updateCoveredSqs(board);
         sq.occupy(this)
+
+        for(let perSq of this.permittedSqs) {
+            if(perSq.occupying && perSq.occupying.rank === 'K'){
+                perSq.occupying.setChecking(true, this, this.sq);
+            }
+        }
+
+        if((this.king && this.king.checked) || this.checked) {
+            if(this.rank === 'K') {
+                this.unSetChecking();
+            } else {
+                this.king.unSetChecking();
+            }
+        }
     }
 }
 

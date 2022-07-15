@@ -31,6 +31,12 @@ class Pawn extends Warrior {
             }
         }
 
+        if(this.king.checked) {
+            this.permittedSqs = this.permittedSqs.filter(sq => {
+                return this.king.checkingPath.includes(sq);
+            })
+        }
+
         return this.permittedSqs;
     }
     

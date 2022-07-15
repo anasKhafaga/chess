@@ -22,6 +22,38 @@ class King extends Warrior {
             [Symbol.for(`(1, 1)`)]: 'backLt',
         }
         this.queenEye = new Queen({army: this.army});
+
+        this.checked = false;
+        this.checking = null;
+        this.checkingPath = [];
+    }
+
+    setChecking(state, enemy, enemySq) {
+        this.checked = state;
+        this.checking = enemy;
+        let checkingDirName;
+
+        main: for(let [k, v] of this.queenEye.coveredSqs) {
+            for(let sq of v) {
+                if(sq === enemySq) {
+                    checkingDirName = k;
+                    break main;
+                }
+            }
+        }
+
+        main: for(let sq of this.queenEye.coveredSqs.get(checkingDirName)) {
+            this.checkingPath.push(sq);
+            if(sq.occupying === enemy) {
+                break main;
+            }
+        }
+    }
+
+    unSetChecking() {
+        this.checked = false;
+        this.checking = null;
+        this.checkingPath.length = 0;
     }
 
     discoverSqs(board) {
@@ -83,7 +115,7 @@ class King extends Warrior {
 
     move(...params) {
 
-        if(this.firstMove) {
+        if(this.firstMove && !this.checked) {
             const [sq, board] = params;
             const [aSq, cSq, dSq, fSq, gSq, hSq] = ['a', 'c', 'd', 'f', 'g', 'h'].map(col => {
                 return board.boardMap.get(`${col}${this.sq.coord.row}`);
