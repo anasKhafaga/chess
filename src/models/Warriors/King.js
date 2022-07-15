@@ -6,6 +6,7 @@ import white from '../../media/king.png';
 import black from '../../media/kingb.png';
 
 import Warrior from '../Warrior';
+import {Queen} from '.';
 
 class King extends Warrior {
     constructor(props) {
@@ -20,6 +21,12 @@ class King extends Warrior {
             [Symbol.for(`(1, -1)`)]: 'forLt',
             [Symbol.for(`(1, 1)`)]: 'backLt',
         }
+        this.queenEye = new Queen({army: this.army});
+    }
+
+    discoverSqs(board) {
+        this.queenEye.sq = this.sq;
+        this.queenEye.updateCoveredSqs(board);
     }
 
     updatePermittedSqs() {
@@ -70,6 +77,7 @@ class King extends Warrior {
         
 
         super.updateCoveredSqs(coveredCoords, board);
+        this.discoverSqs(board);
         return this.coveredSqs
     }
 

@@ -55,8 +55,18 @@ export default function Board() {
         .set('R', [boardMap.get('a8'), boardMap.get('h8')])
         .set('P', [boardMap.get('a7'), boardMap.get('b7'), boardMap.get('c7'), boardMap.get('d7'), boardMap.get('e7'), boardMap.get('f7'), boardMap.get('g7'), boardMap.get('h7')])
 
-        model.alignArmy(whiteArmyMap, 'white');
-        model.alignArmy(blackArmyMap, 'black');
+        const whiteArmy = model.alignArmy(whiteArmyMap, 'white');
+        const blackArmy = model.alignArmy(blackArmyMap, 'black');
+
+        for(let [k, v] of whiteArmy) {
+            if(k === 'K') continue;
+            v.king = whiteArmy.get('K');
+        }
+
+        for(let [k, v] of blackArmy) {
+            if(k === 'K') continue;
+            v.king = blackArmy.get('K');
+        }
         
         setBoardSqs(boardSqsHolder);
         

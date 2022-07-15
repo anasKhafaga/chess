@@ -23,6 +23,10 @@ class Warrior {
                 if(sq.occupying) {
                     if(sq.occupying.army !== this.army) {
                         this.permittedSqs.push(sq);
+
+                        if(sq.occupying.rank === 'K') {
+                            continue dir;
+                        }
                     }
                     break dir;
                 }
