@@ -31,9 +31,15 @@ class Square {
     }
 
     notifyObservers() {
+        let queenEye = () => {};
         for(let observer of this.observers) {
-            observer.gotUpdate();
+            if(observer.name === 'Qe') {
+                queenEye = () => observer.gotUpdate(this);
+                continue
+            }
+            observer.gotUpdate(this);
         }
+        queenEye();
     }
 }
 

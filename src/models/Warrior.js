@@ -14,6 +14,7 @@ class Warrior {
         this.coveredSqs = new Map([['for', []], ['back', []], ['rt', []], ['lt', []], ['forRt', []], ['forLt', []], ['backLt', []], ['backRt', []]]);
         this.permittedSqs = [];
         this.killed = false;
+        this.pinned = false;
     }
 
     updatePermittedSqs() {
@@ -29,6 +30,10 @@ class Warrior {
                     break dir;
                 }
 
+                if(this.pinned && !this.king.pinningPaths.get(this).includes(sq)) {
+                    continue dir;
+                }
+
                 if(this.king && this.king.checked && !this.king.checkingPath.includes(sq)) {
                     continue dir;
                 }
@@ -40,7 +45,8 @@ class Warrior {
     }
     
     gotUpdate() {
-        this.updatePermittedSqs()
+        this.updatePermittedSqs();
+        this.checkKing();
     }
     
     updateCoveredSqs(coords, board) {
@@ -75,6 +81,14 @@ class Warrior {
         this.permittedSqs.length = 0;
     }
 
+    checkKing() {
+        for(let perSq of this.permittedSqs) {
+            if(perSq.occupying && perSq.occupying.rank === 'K' && perSq.occupying.army !== this.army && perSq.occupying.name !== 'Qe'){
+                perSq.occupying.setChecking(true, this, this.sq);
+            }
+        }
+    }
+
     move(sq, board, cb) {
         this.firstMove = false;
         cb(this, this.sq);
@@ -84,11 +98,7 @@ class Warrior {
         this.updateCoveredSqs(board);
         sq.occupy(this)
 
-        for(let perSq of this.permittedSqs) {
-            if(perSq.occupying && perSq.occupying.rank === 'K' && perSq.occupying.army !== this.army && perSq.occupying.name !== 'Qe'){
-                perSq.occupying.setChecking(true, this, this.sq);
-            }
-        }
+        this.checkKing();
 
         if((this.king && this.king.checked) || this.checked) {
             if(this.rank === 'K') {

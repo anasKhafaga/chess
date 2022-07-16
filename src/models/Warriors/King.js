@@ -21,11 +21,13 @@ class King extends Warrior {
             [Symbol.for(`(1, -1)`)]: 'forLt',
             [Symbol.for(`(1, 1)`)]: 'backLt',
         }
-        this.queenEye = new Queen({army: this.army, name: 'Qe'});
+        this.queenEye = new Queen({army: this.army, name: 'Qe', king: this});
 
         this.checked = false;
         this.checking = null;
         this.checkingPath = [];
+        this.pinningPaths = new Map();
+        this.pinnedList = new Set();
     }
 
     setChecking(state, enemy, enemySq) {
@@ -162,6 +164,12 @@ class King extends Warrior {
         
 
         super.move(...params);
+
+        for(let warrior of this.pinnedList) {
+            warrior.pinned = false;
+        }
+        this.pinnedList.clear();
+        this.pinningPaths.clear();
         
     }
     
