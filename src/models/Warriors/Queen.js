@@ -58,10 +58,14 @@ class Queen extends Warrior {
                 this.king.pinningPaths.delete(pinnedWarrior);
                 this.king.pinnedList.delete(pinnedWarrior);
             }
-        } else if( pinnedWarrior && (!attackingWarrior || attackingWarrior.rank === 'N')) {
+        } else if(!attackingWarrior) {
             this.king.pinningPaths.delete(pinnedWarrior);
             this.king.pinnedList.delete(pinnedWarrior);
 
+        } else if(!pinnedWarrior && attackingWarrior) {
+            if(attackingWarrior.permittedSqs.includes(this.king.sq)) {
+                this.king.setChecking(true, attackingWarrior, attackingWarrior.sq);
+            }
         }
     }
 

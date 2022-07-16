@@ -46,7 +46,6 @@ class Warrior {
     
     gotUpdate() {
         this.updatePermittedSqs();
-        this.checkKing();
     }
     
     updateCoveredSqs(coords, board) {
@@ -81,14 +80,6 @@ class Warrior {
         this.permittedSqs.length = 0;
     }
 
-    checkKing() {
-        for(let perSq of this.permittedSqs) {
-            if(perSq.occupying && perSq.occupying.rank === 'K' && perSq.occupying.army !== this.army && perSq.occupying.name !== 'Qe'){
-                perSq.occupying.setChecking(true, this, this.sq);
-            }
-        }
-    }
-
     move(sq, board, cb) {
         this.firstMove = false;
         cb(this, this.sq);
@@ -97,8 +88,6 @@ class Warrior {
         this.sq = sq;
         this.updateCoveredSqs(board);
         sq.occupy(this)
-
-        this.checkKing();
 
         if((this.king && this.king.checked) || this.checked) {
             if(this.rank === 'K') {

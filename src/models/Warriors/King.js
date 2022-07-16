@@ -6,7 +6,7 @@ import white from '../../media/king.png';
 import black from '../../media/kingb.png';
 
 import Warrior from '../Warrior';
-import {Queen} from '.';
+import {Knight, Queen} from '.';
 
 class King extends Warrior {
     constructor(props) {
@@ -22,6 +22,7 @@ class King extends Warrior {
             [Symbol.for(`(1, 1)`)]: 'backLt',
         }
         this.queenEye = new Queen({army: this.army, name: 'Qe', king: this});
+        this.knightEye = new Knight({army: this.army, name: 'Ne', king: this});
 
         this.checked = false;
         this.checking = null;
@@ -65,7 +66,9 @@ class King extends Warrior {
 
     discoverSqs(board) {
         this.queenEye.sq = this.sq;
+        this.knightEye.sq = this.sq;
         this.queenEye.updateCoveredSqs(board);
+        this.knightEye.updateCoveredSqs(board);
     }
 
     updatePermittedSqs() {
@@ -76,7 +79,7 @@ class King extends Warrior {
             for(let obs of sq.observers) {
                 if(obs.army === this.army) continue;
 
-                if(obs.name === 'Qe') continue;
+                if(obs.name === 'Qe' || obs.name === 'Ne') continue;
                 
                 if(obs.rank === 'P') {
                     if(obs.coveredSqs.get('forLt')[0] === sq || obs.coveredSqs.get('forRt')[0] === sq) {
