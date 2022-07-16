@@ -21,7 +21,7 @@ class King extends Warrior {
             [Symbol.for(`(1, -1)`)]: 'forLt',
             [Symbol.for(`(1, 1)`)]: 'backLt',
         }
-        this.queenEye = new Queen({army: this.army});
+        this.queenEye = new Queen({army: this.army, name: 'Qe'});
 
         this.checked = false;
         this.checking = null;
@@ -31,6 +31,11 @@ class King extends Warrior {
     setChecking(state, enemy, enemySq) {
         this.checked = state;
         this.checking = enemy;
+
+        if(enemy.rank === 'N') {
+            return this.checkingPath.push(enemySq);
+        }
+        
         let checkingDirName;
 
         main: for(let [k, v] of this.queenEye.coveredSqs) {
@@ -69,6 +74,8 @@ class King extends Warrior {
             for(let obs of sq.observers) {
                 if(obs.army === this.army) continue;
 
+                if(obs.name === 'Qe') continue;
+                
                 if(obs.rank === 'P') {
                     if(obs.coveredSqs.get('forLt')[0] === sq || obs.coveredSqs.get('forRt')[0] === sq) {
                         continue main;

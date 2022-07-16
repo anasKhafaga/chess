@@ -51,7 +51,7 @@ export default function Square({model, activeWarrior, activateWarrior, boardMode
     }, [prevSq])
     
     function occupy() {
-        if(!activeWarrior || occupyingWarrior === activeWarrior || !activeWarrior.permittedSqs.includes(model)) return;
+        if(!activeWarrior || occupyingWarrior === activeWarrior || !activeWarrior.permittedSqs.includes(model) || (occupyingWarrior && occupyingWarrior.army === activeWarrior.army)) return;
         activeWarrior.move(model, boardModel, (warrior, pSq) => {
             setOccupied(true);
             setOccupyingWarrior(warrior);
