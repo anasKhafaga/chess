@@ -31,12 +31,47 @@ class King extends Warrior {
         this.pinnedList = new Set();
     }
 
+    checkMate() {
+        this.updatePermittedSqs();
+
+        for(let sq of this.permittedSqs) {
+            if(!sq.occupying || sq.occupying.army !== this.army) {
+                return false;
+            }
+        }
+
+        if(this.checkingPath.length === 0) return true;
+
+        for (let sq of this.checkingPath){
+            for(let obs of sq.observers) {
+                if(obs.army === this.army && obs.rank !== 'K' && obs.name !== 'Qe' && obs.name !== 'Ne'){
+                    obs.updatePermittedSqs();
+                    if(obs.permittedSqs.includes(sq)) return false;
+                }
+            }
+        }
+
+        return true;
+    }
+    
     setChecking(state, enemy, enemySq) {
         this.checked = state;
         this.checking = enemy;
 
+        if(this.checked) {
+            this.checkingPath.length = 0;
+            if(this.checkMate()) {
+                this.endGame(this.army === 'white'? 'black' : 'white');
+            }
+            return;
+        }
+
         if(enemy.rank === 'N') {
-            return this.checkingPath.push(enemySq);
+            this.checkingPath.push(enemySq);
+            if(this.checkMate()) {
+                this.endGame(this.army === 'white'? 'black' : 'white');
+            }
+            return;
         }
         
         let checkingDirName;
@@ -56,6 +91,11 @@ class King extends Warrior {
                 break main;
             }
         }
+
+        if(this.checkMate()) {
+            this.endGame(this.army === 'white'? 'black' : 'white');
+        }
+        
     }
 
     unSetChecking() {

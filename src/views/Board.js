@@ -10,6 +10,8 @@ export default function Board() {
     const [flip, setFlip] = useState(false);
     const [prevWarrior, setPrevWarrior] = useState(null);
     const [prevSq, setPrevSq] = useState(null);
+    const [gameOver, setGameOver] = useState(false);
+    const [winner, setWinner] = useState(null);
 
     function activateWarrior(warrior) {
         if(warrior && warrior.army !== player) return;
@@ -58,19 +60,36 @@ export default function Board() {
         const whiteArmy = model.alignArmy(whiteArmyMap, 'white');
         const blackArmy = model.alignArmy(blackArmyMap, 'black');
 
+        const whiteKing = whiteArmy.get('K');
+        const blackKing = blackArmy.get('K');
+        
         for(let [k, v] of whiteArmy) {
             if(k === 'K') continue;
-            v.king = whiteArmy.get('K');
+            v.king = whiteKing;
         }
 
         for(let [k, v] of blackArmy) {
             if(k === 'K') continue;
-            v.king = blackArmy.get('K');
+            v.king = blackKing;
         }
+
+        function endGame(winner) {
+            setGameOver(true);
+            setWinner(winner);
+        }
+
+        whiteKing.endGame = endGame;
+        blackKing.endGame = endGame;
         
         setBoardSqs(boardSqsHolder);
         
     }, [])
+
+    useEffect(() => {
+        if(gameOver) {
+            alert(`${winner} wins by checkMate`)
+        }
+    }, [gameOver])
     
     return (
         <div className={`brd ${flip? 'flip' : ''}`}>
